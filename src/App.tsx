@@ -1,22 +1,17 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import dotenv from "dotenv";
-import timestampConverter from "./utils/timestampConverter";
+
+import Todo from "./components/Todo";
+import { ITodo } from "./utils/interfaces";
+import NewTodoForm from "./components/NewTodoForm";
 
 dotenv.config();
-
-interface Todo {
-  id: number;
-  text: string;
-  createdAt: number;
-  completed: boolean;
-}
 
 export default function App(): JSX.Element {
   const [isFirstLoad, setIsFirstLoad] = useState(true);
   // const [message, setMessage] = useState<string>();
-  const [todoData, setTodoData] = useState<Todo[]>([]);
-  const [newTodoValue, setNewTodoValue] = useState<string>("");
+  const [todoData, setTodoData] = useState<ITodo[]>([]);
 
   const loadDataFromEndpoint = async (endpoint: string) => {
     try {
@@ -31,6 +26,10 @@ export default function App(): JSX.Element {
     }
   };
 
+  const handleUpdateTodosAfterCreation = (newTodo: ITodo): void => {
+    setTodoData([...todoData, newTodo]);
+  };
+
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (isFirstLoad) {
@@ -38,22 +37,6 @@ export default function App(): JSX.Element {
       setIsFirstLoad(false);
     }
   });
-
-  const handleCreateTodo = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    await axios
-      .post(`${process.env.REACT_APP_PROD_API_URL}todos`, {
-        text: newTodoValue,
-        createdAt: Date.now(),
-      })
-      .then(function (response) {
-        todoData.push(response.data);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-    setNewTodoValue("");
-  };
 
   const handleDeleteTodo = async (todoId: number) => {
     await axios
@@ -80,41 +63,32 @@ export default function App(): JSX.Element {
       });
   };
 
+  const handleEditTodo = async (todoId: number) => {
+    await axios
+      .patch(`${process.env.REACT_APP_PROD_API_URL}todos/${todoId}`, {
+        text: "An edited todo",
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
   return (
     <>
       <h1>Todo List</h1>
-      <section>
-        <form onSubmit={handleCreateTodo}>
-          <label>Create a new todo:</label>
-          <input
-            value={newTodoValue}
-            onChange={(e) => setNewTodoValue(e.target.value)}
-            placeholder="Write your todo..."
-          />
-          <button type="submit">Create</button>
-        </form>
-      </section>
+      <NewTodoForm updateTodosAfterCreation={handleUpdateTodosAfterCreation} />
       <hr />
       <ul>
         {todoData
           .sort((a, b) => b.createdAt - a.createdAt)
           .map((todo) => (
-            <li key={todo.id}>
-              {todo.text} - {timestampConverter(todo.createdAt)}
-              <button>Edit</button>
-              <button onClick={() => handleDeleteTodo(todo.id)}>Delete</button>
-              <label>
-                <input
-                  type="checkbox"
-                  name="isComplete"
-                  defaultChecked={todo.completed}
-                  onChange={() =>
-                    handleIsCompleteToggle(todo.id, todo.completed)
-                  }
-                />
-                Completed?
-              </label>
-            </li>
+            <Todo
+              key={todo.id}
+              todo={todo}
+              handleEditTodo={handleEditTodo}
+              handleDeleteTodo={handleDeleteTodo}
+              handleIsCompleteToggle={handleIsCompleteToggle}
+            />
           ))}
       </ul>
     </>
