@@ -26,10 +26,6 @@ export default function App(): JSX.Element {
     }
   };
 
-  const handleUpdateTodosAfterCreation = (newTodo: ITodo): void => {
-    setTodoData([...todoData, newTodo]);
-  };
-
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (isFirstLoad) {
@@ -37,6 +33,10 @@ export default function App(): JSX.Element {
       setIsFirstLoad(false);
     }
   });
+
+  const handleUpdateTodosAfterCreation = (newTodo: ITodo): void => {
+    setTodoData([...todoData, newTodo]);
+  };
 
   const handleDeleteTodo = async (todoId: number) => {
     await axios
@@ -63,16 +63,6 @@ export default function App(): JSX.Element {
       });
   };
 
-  const handleEditTodo = async (todoId: number) => {
-    await axios
-      .patch(`${process.env.REACT_APP_PROD_API_URL}todos/${todoId}`, {
-        text: "An edited todo",
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  };
-
   return (
     <>
       <h1>Todo List</h1>
@@ -85,7 +75,7 @@ export default function App(): JSX.Element {
             <Todo
               key={todo.id}
               todo={todo}
-              handleEditTodo={handleEditTodo}
+              // handleEditTodo={handleEditTodo}
               handleDeleteTodo={handleDeleteTodo}
               handleIsCompleteToggle={handleIsCompleteToggle}
             />
