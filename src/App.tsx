@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import dotenv from "dotenv";
-import moment from "moment";
+import timestampConverter from "./utils/timestampConverter";
 
 dotenv.config();
 
@@ -80,24 +80,12 @@ export default function App(): JSX.Element {
       });
   };
 
-  const timestampConverter = (unixTimestamp: number): string => {
-    const array = moment(unixTimestamp).toArray(); // [2013, 1, 4, 14, 40, 16, 154];
-    const outputString = moment([
-      array[0],
-      array[1],
-      array[2],
-      array[3],
-      array[4],
-    ]).fromNow();
-    return outputString;
-  };
-
   return (
     <>
       <h1>Todo List</h1>
       <section>
-        <h3>Create a new todo:</h3>
         <form onSubmit={handleCreateTodo}>
+          <label>Create a new todo:</label>
           <input
             value={newTodoValue}
             onChange={(e) => setNewTodoValue(e.target.value)}
@@ -108,22 +96,26 @@ export default function App(): JSX.Element {
       </section>
       <hr />
       <ul>
-        {todoData.map((todo) => (
-          <li key={todo.id}>
-            {todo.text} - {timestampConverter(todo.createdAt)}
-            <button>Edit</button>
-            <button onClick={() => handleDeleteTodo(todo.id)}>Delete</button>
-            <label>
-              <input
-                type="checkbox"
-                name="isComplete"
-                defaultChecked={todo.completed}
-                onChange={() => handleIsCompleteToggle(todo.id, todo.completed)}
-              />
-              Completed?
-            </label>
-          </li>
-        ))}
+        {todoData
+          .sort((a, b) => b.createdAt - a.createdAt)
+          .map((todo) => (
+            <li key={todo.id}>
+              {todo.text} - {timestampConverter(todo.createdAt)}
+              <button>Edit</button>
+              <button onClick={() => handleDeleteTodo(todo.id)}>Delete</button>
+              <label>
+                <input
+                  type="checkbox"
+                  name="isComplete"
+                  defaultChecked={todo.completed}
+                  onChange={() =>
+                    handleIsCompleteToggle(todo.id, todo.completed)
+                  }
+                />
+                Completed?
+              </label>
+            </li>
+          ))}
       </ul>
     </>
   );
