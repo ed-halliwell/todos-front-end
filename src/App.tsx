@@ -3,7 +3,7 @@ import axios from "axios";
 import dotenv from "dotenv";
 
 dotenv.config();
-console.log(process.env.REACT_APP_PROD_API_URL);
+
 interface Todo {
   id: number;
   text: string;
@@ -40,18 +40,29 @@ export default function App(): JSX.Element {
 
   const createTodo = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("Creating todo...", formValue);
     await axios
-      .post("/todos", {
+      .post(`${process.env.REACT_APP_PROD_API_URL}todos`, {
         text: formValue,
       })
       .then(function (response) {
-        console.log(response);
+        todoData.push(response.data);
       })
       .catch(function (error) {
         console.log(error);
       });
     setFormValue("");
+  };
+
+  const handleDeleteTodo = async (todoId: number) => {
+    await axios
+      .delete(`${process.env.REACT_APP_PROD_API_URL}todos/${todoId}`)
+      .then(function (response) {
+        console.log(response);
+        setTodoData(todoData.filter((todo) => todo.id !== todoId));
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   };
 
   return (
@@ -62,7 +73,7 @@ export default function App(): JSX.Element {
           <li key={todo.id}>
             {todo.text}
             <button>Edit</button>
-            <button>Delete</button>
+            <button onClick={() => handleDeleteTodo(todo.id)}>Delete</button>
           </li>
         ))}
       </ul>
