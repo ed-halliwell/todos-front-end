@@ -78,9 +78,6 @@ export default function Todo(props: TodoProps): JSX.Element {
               checked={completed}
               tabIndex={-1}
               disableRipple
-              inputProps={{
-                "aria-labelledby": `checkbox-list-label-${id.toString()}`,
-              }}
             />
           </ListItemIcon>
           <Box>

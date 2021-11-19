@@ -14,6 +14,7 @@ import Header from "./components/Header";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import Divider from "@mui/material/Divider";
+import Container from "@mui/material/Container";
 
 dotenv.config();
 
@@ -46,7 +47,9 @@ export default function App(): JSX.Element {
 
   const handleUpdateTodosAfterEditing = (updatedTodo: ITodo): void => {
     const updatedTodos = todoData.map((todo) =>
-      todo.id === updatedTodo.id ? { ...todo, text: updatedTodo.text } : todo
+      todo.id === updatedTodo.id
+        ? { ...todo, completed: updatedTodo.completed }
+        : todo
     );
     setTodoData(updatedTodos);
   };
@@ -68,16 +71,25 @@ export default function App(): JSX.Element {
       .patch(`${API_BASE}todos/${todoId}`, {
         completed: !currentCompletedValue,
       })
+      .then((res) => handleUpdateTodosAfterEditing(res.data.data.didUpdate))
       .catch((error) => console.log(error));
   };
 
   return (
     <>
       <Header />
-      <NewTodoForm updateTodosAfterCreation={handleUpdateTodosAfterCreation} />
-      <section className="TodoList">
+      <Container maxWidth="xs" sx={{ border: "none" }}>
+        <NewTodoForm
+          updateTodosAfterCreation={handleUpdateTodosAfterCreation}
+        />
+        <Divider />
         <List
-          sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
+          sx={{
+            width: "100%",
+            maxWidth: 360,
+            bgcolor: "background.paper",
+            margin: "auto",
+          }}
         >
           {todoData
             .sort((a, b) => b.createdAt - a.createdAt)
@@ -95,7 +107,7 @@ export default function App(): JSX.Element {
               </React.Fragment>
             ))}
         </List>
-      </section>
+      </Container>
     </>
   );
 }
