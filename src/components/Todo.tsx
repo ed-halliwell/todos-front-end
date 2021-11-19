@@ -88,20 +88,6 @@ export default function Todo(props: TodoProps): JSX.Element {
           </form>
         </ListItemButton>
       ) : (
-        // <li>
-        //   <form onSubmit={(e) => handleEditTodo(e, id, editedTodo)}>
-        //     <input
-        //       type="text"
-        //       value={editedTodo}
-        //       placeholder={text}
-        //       onChange={(e) => setEditedTodo(e.target.value)}
-        //     />
-        //     <button type="button" onClick={toggleEditMode}>
-        //       Cancel
-        //     </button>
-        //     <button type="submit">Save</button>
-        //   </form>
-        // </li>
         <ListItemButton role={undefined} dense>
           <ListItemIcon>
             <Checkbox

@@ -31,11 +31,15 @@ export default function NewTodoForm(props: NewTodoFormProps): JSX.Element {
 
   return (
     <section>
-      {/* <Stack spacing={2} direction="row">
-        <Button variant="contained">Create New Todo</Button>
-      </Stack> */}
-
       <form onSubmit={handleCreateTodo}>
+        {/* <FormControl>
+              <Input
+                id="component-simple"
+                placeholder={text}
+                value={editedTodo}
+                onChange={(e) => setEditedTodo(e.target.value)}
+              />
+            </FormControl> */}
         <label>Create a new todo: </label>
         <input
           value={newTodoValue}
