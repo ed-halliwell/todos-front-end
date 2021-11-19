@@ -38,11 +38,17 @@ export default function App(): JSX.Element {
     setTodoData([...todoData, newTodo]);
   };
 
+  const handleUpdateTodosAfterEditing = (updatedTodo: ITodo): void => {
+    const updatedTodos = todoData.map((todo) =>
+      todo.id === updatedTodo.id ? { ...todo, text: updatedTodo.text } : todo
+    );
+    setTodoData(updatedTodos);
+  };
+
   const handleDeleteTodo = async (todoId: number) => {
     await axios
       .delete(`${process.env.REACT_APP_PROD_API_URL}todos/${todoId}`)
       .then(function (response) {
-        console.log(response);
         setTodoData(todoData.filter((todo) => todo.id !== todoId));
       })
       .catch(function (error) {
@@ -75,7 +81,7 @@ export default function App(): JSX.Element {
             <Todo
               key={todo.id}
               todo={todo}
-              // handleEditTodo={handleEditTodo}
+              updateTodosAfterEditing={handleUpdateTodosAfterEditing}
               handleDeleteTodo={handleDeleteTodo}
               handleIsCompleteToggle={handleIsCompleteToggle}
             />
