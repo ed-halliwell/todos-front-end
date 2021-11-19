@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import dotenv from "dotenv";
+import { API_BASE } from "./utils/APIFragments";
 
 import Todo from "./components/Todo";
 import { ITodo } from "./utils/interfaces";
@@ -14,9 +15,7 @@ export default function App(): JSX.Element {
 
   const loadDataFromEndpoint = async (endpoint: string) => {
     try {
-      const res = await axios.get(
-        `https://ancient-dawn-25483.herokuapp.com/${endpoint}`
-      );
+      const res = await axios.get(`${API_BASE}${endpoint}`);
       setTodoData(res.data);
     } catch (err) {
       if (err instanceof Error) {
@@ -46,7 +45,7 @@ export default function App(): JSX.Element {
 
   const handleDeleteTodo = async (todoId: number) => {
     await axios
-      .delete(`${process.env.REACT_APP_PROD_API_URL}todos/${todoId}`)
+      .delete(`${API_BASE}todos/${todoId}`)
       .then(function (response) {
         setTodoData(todoData.filter((todo) => todo.id !== todoId));
       })
@@ -60,7 +59,7 @@ export default function App(): JSX.Element {
     currentCompletedValue: boolean
   ) => {
     await axios
-      .patch(`${process.env.REACT_APP_PROD_API_URL}todos/${todoId}`, {
+      .patch(`${API_BASE}todos/${todoId}`, {
         completed: !currentCompletedValue,
       })
       .catch(function (error) {

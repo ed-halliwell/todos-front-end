@@ -2,6 +2,8 @@ import { useState } from "react";
 import { ITodo } from "../utils/interfaces";
 import timestampConverter from "../utils/timestampConverter";
 import axios from "axios";
+import { API_BASE } from "../utils/APIFragments";
+
 interface TodoProps {
   todo: ITodo;
   updateTodosAfterEditing: (updatedTodo: ITodo) => void;
@@ -27,7 +29,7 @@ export default function Todo(props: TodoProps): JSX.Element {
     e.preventDefault();
     console.log(updatedText);
     await axios
-      .patch(`${process.env.REACT_APP_PROD_API_URL}todos/${todoId}`, {
+      .patch(`${API_BASE}todos/${todoId}`, {
         text: updatedText,
       })
       .then((res) => {

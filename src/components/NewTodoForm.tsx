@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { ITodo } from "../utils/interfaces";
+import { API_BASE } from "../utils/APIFragments";
 
 interface NewTodoFormProps {
   updateTodosAfterCreation: (newTodo: ITodo) => void;
@@ -12,7 +13,7 @@ export default function NewTodoForm(props: NewTodoFormProps): JSX.Element {
   const handleCreateTodo = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     await axios
-      .post(`${process.env.REACT_APP_PROD_API_URL}todos`, {
+      .post(`${API_BASE}todos`, {
         text: newTodoValue,
         createdAt: Date.now(),
       })
