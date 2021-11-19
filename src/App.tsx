@@ -47,9 +47,7 @@ export default function App(): JSX.Element {
 
   const handleUpdateTodosAfterEditing = (updatedTodo: ITodo): void => {
     const updatedTodos = todoData.map((todo) =>
-      todo.id === updatedTodo.id
-        ? { ...todo, completed: updatedTodo.completed }
-        : todo
+      todo.id === updatedTodo.id ? { ...updatedTodo } : todo
     );
     setTodoData(updatedTodos);
   };

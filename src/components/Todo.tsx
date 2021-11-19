@@ -14,6 +14,10 @@ import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ListItemSecondaryAction from "@mui/material/ListItemSecondaryAction";
+import CloseIcon from "@mui/icons-material/Close";
+import CheckIcon from "@mui/icons-material/Check";
+import FormControl from "@mui/material/FormControl";
+import Input from "@mui/material/Input";
 
 interface TodoProps {
   todo: ITodo;
@@ -25,7 +29,7 @@ interface TodoProps {
 export default function Todo(props: TodoProps): JSX.Element {
   const { text, id, createdAt, completed } = props.todo;
 
-  const [isEditing, setIsEditing] = useState<boolean>();
+  const [isEditing, setIsEditing] = useState<boolean>(false);
   const [editedTodo, setEditedTodo] = useState<string>(text);
 
   const toggleEditMode = () => {
@@ -52,32 +56,60 @@ export default function Todo(props: TodoProps): JSX.Element {
   return (
     <>
       {isEditing ? (
-        <li>
+        <ListItemButton dense>
           <form onSubmit={(e) => handleEditTodo(e, id, editedTodo)}>
-            <input
-              type="text"
-              value={editedTodo}
-              placeholder={text}
-              onChange={(e) => setEditedTodo(e.target.value)}
-            />
-            <button type="button" onClick={toggleEditMode}>
-              Cancel
-            </button>
-            <button type="submit">Save</button>
+            <ListItemIcon>
+              <Checkbox
+                edge="start"
+                disabled
+                checked={completed}
+                tabIndex={-1}
+                disableRipple
+              />
+            </ListItemIcon>
+
+            <FormControl>
+              <Input
+                id="component-simple"
+                placeholder={text}
+                value={editedTodo}
+                onChange={(e) => setEditedTodo(e.target.value)}
+              />
+            </FormControl>
+
+            <ListItemSecondaryAction>
+              <IconButton aria-label="Cancel" onClick={toggleEditMode}>
+                <CloseIcon />
+              </IconButton>
+              <IconButton aria-label="Save" type="submit">
+                <CheckIcon />
+              </IconButton>
+            </ListItemSecondaryAction>
           </form>
-        </li>
+        </ListItemButton>
       ) : (
-        <ListItemButton
-          role={undefined}
-          onClick={() => props.handleIsCompleteToggle(id, completed)}
-          dense
-        >
+        // <li>
+        //   <form onSubmit={(e) => handleEditTodo(e, id, editedTodo)}>
+        //     <input
+        //       type="text"
+        //       value={editedTodo}
+        //       placeholder={text}
+        //       onChange={(e) => setEditedTodo(e.target.value)}
+        //     />
+        //     <button type="button" onClick={toggleEditMode}>
+        //       Cancel
+        //     </button>
+        //     <button type="submit">Save</button>
+        //   </form>
+        // </li>
+        <ListItemButton role={undefined} dense>
           <ListItemIcon>
             <Checkbox
               edge="start"
               checked={completed}
               tabIndex={-1}
               disableRipple
+              onClick={() => props.handleIsCompleteToggle(id, completed)}
             />
           </ListItemIcon>
           <Box>
