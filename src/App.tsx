@@ -10,13 +10,12 @@ dotenv.config();
 
 export default function App(): JSX.Element {
   const [isFirstLoad, setIsFirstLoad] = useState(true);
-  // const [message, setMessage] = useState<string>();
   const [todoData, setTodoData] = useState<ITodo[]>([]);
 
   const loadDataFromEndpoint = async (endpoint: string) => {
     try {
       const res = await axios.get(
-        `${process.env.REACT_APP_PROD_API_URL}${endpoint}`
+        `https://ancient-dawn-25483.herokuapp.com/${endpoint}`
       );
       setTodoData(res.data);
     } catch (err) {
