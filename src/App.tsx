@@ -1,12 +1,19 @@
 import { useEffect, useState } from "react";
+import React from "react";
 import axios from "axios";
 import dotenv from "dotenv";
+import "./styles/App.css";
 
 import { API_BASE } from "./utils/APIFragments";
 import { ITodo } from "./utils/interfaces";
 
 import Todo from "./components/Todo";
 import NewTodoForm from "./components/NewTodoForm";
+import Header from "./components/Header";
+
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import Divider from "@mui/material/Divider";
 
 dotenv.config();
 
@@ -66,22 +73,29 @@ export default function App(): JSX.Element {
 
   return (
     <>
-      <h1>Todo List</h1>
+      <Header />
       <NewTodoForm updateTodosAfterCreation={handleUpdateTodosAfterCreation} />
-      <hr />
-      <ul>
-        {todoData
-          .sort((a, b) => b.createdAt - a.createdAt)
-          .map((todo) => (
-            <Todo
-              key={todo.id}
-              todo={todo}
-              updateTodosAfterEditing={handleUpdateTodosAfterEditing}
-              handleDeleteTodo={handleDeleteTodo}
-              handleIsCompleteToggle={handleIsCompleteToggle}
-            />
-          ))}
-      </ul>
+      <section className="TodoList">
+        <List
+          sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
+        >
+          {todoData
+            .sort((a, b) => b.createdAt - a.createdAt)
+            .map((todo) => (
+              <React.Fragment key={todo.id}>
+                <ListItem key={todo.id} disablePadding>
+                  <Todo
+                    todo={todo}
+                    updateTodosAfterEditing={handleUpdateTodosAfterEditing}
+                    handleDeleteTodo={handleDeleteTodo}
+                    handleIsCompleteToggle={handleIsCompleteToggle}
+                  />
+                </ListItem>
+                <Divider light />
+              </React.Fragment>
+            ))}
+        </List>
+      </section>
     </>
   );
 }

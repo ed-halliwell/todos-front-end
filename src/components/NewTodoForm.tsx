@@ -3,6 +3,9 @@ import axios from "axios";
 import { ITodo } from "../utils/interfaces";
 import { API_BASE } from "../utils/APIFragments";
 
+// import Stack from "@mui/material/Stack";
+// import Button from "@mui/material/Button";
+
 interface NewTodoFormProps {
   updateTodosAfterCreation: (newTodo: ITodo) => void;
 }
@@ -28,6 +31,10 @@ export default function NewTodoForm(props: NewTodoFormProps): JSX.Element {
 
   return (
     <section>
+      {/* <Stack spacing={2} direction="row">
+        <Button variant="contained">Create New Todo</Button>
+      </Stack> */}
+
       <form onSubmit={handleCreateTodo}>
         <label>Create a new todo: </label>
         <input

@@ -4,6 +4,17 @@ import timestampConverter from "../utils/timestampConverter";
 import axios from "axios";
 import { API_BASE } from "../utils/APIFragments";
 
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import Checkbox from "@mui/material/Checkbox";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
+import IconButton from "@mui/material/IconButton";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import ListItemSecondaryAction from "@mui/material/ListItemSecondaryAction";
+
 interface TodoProps {
   todo: ITodo;
   updateTodosAfterEditing: (updatedTodo: ITodo) => void;
@@ -56,20 +67,40 @@ export default function Todo(props: TodoProps): JSX.Element {
           </form>
         </li>
       ) : (
-        <li>
-          {text} - {timestampConverter(createdAt)}
-          <button onClick={toggleEditMode}>Edit</button>
-          <button onClick={() => props.handleDeleteTodo(id)}>Delete</button>
-          <label>
-            <input
-              type="checkbox"
-              name="isComplete"
-              defaultChecked={completed}
-              onChange={() => props.handleIsCompleteToggle(id, completed)}
+        <ListItemButton
+          role={undefined}
+          onClick={() => props.handleIsCompleteToggle(id, completed)}
+          dense
+        >
+          <ListItemIcon>
+            <Checkbox
+              edge="start"
+              checked={completed}
+              tabIndex={-1}
+              disableRipple
+              inputProps={{
+                "aria-labelledby": `checkbox-list-label-${id.toString()}`,
+              }}
             />
-            Completed?
-          </label>
-        </li>
+          </ListItemIcon>
+          <Box>
+            <ListItemText id={id.toString()} primary={text} />
+            <Typography variant="caption" display="block" gutterBottom>
+              {timestampConverter(createdAt)}
+            </Typography>
+          </Box>
+          <ListItemSecondaryAction>
+            <IconButton aria-label="Edit" onClick={toggleEditMode}>
+              <EditIcon />
+            </IconButton>
+            <IconButton
+              aria-label="Delete"
+              onClick={() => props.handleDeleteTodo(id)}
+            >
+              <DeleteIcon />
+            </IconButton>
+          </ListItemSecondaryAction>
+        </ListItemButton>
       )}
     </>
   );
