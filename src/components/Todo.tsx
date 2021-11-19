@@ -27,18 +27,15 @@ export default function Todo(props: TodoProps): JSX.Element {
     updatedText: string
   ) => {
     e.preventDefault();
-    console.log(updatedText);
     await axios
       .patch(`${API_BASE}todos/${todoId}`, {
         text: updatedText,
       })
       .then((res) => {
-        toggleEditMode();
         props.updateTodosAfterEditing(res.data.data.didUpdate);
+        toggleEditMode();
       })
-      .catch(function (error) {
-        console.log(error);
-      });
+      .catch((error) => console.log(error));
   };
 
   return (

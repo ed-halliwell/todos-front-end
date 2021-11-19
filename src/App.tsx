@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import dotenv from "dotenv";
+
 import { API_BASE } from "./utils/APIFragments";
+import { ITodo } from "./utils/interfaces";
 
 import Todo from "./components/Todo";
-import { ITodo } from "./utils/interfaces";
 import NewTodoForm from "./components/NewTodoForm";
 
 dotenv.config();
@@ -46,12 +47,10 @@ export default function App(): JSX.Element {
   const handleDeleteTodo = async (todoId: number) => {
     await axios
       .delete(`${API_BASE}todos/${todoId}`)
-      .then(function (response) {
+      .then(() => {
         setTodoData(todoData.filter((todo) => todo.id !== todoId));
       })
-      .catch(function (error) {
-        console.log(error);
-      });
+      .catch((error) => console.log(error));
   };
 
   const handleIsCompleteToggle = async (
@@ -62,9 +61,7 @@ export default function App(): JSX.Element {
       .patch(`${API_BASE}todos/${todoId}`, {
         completed: !currentCompletedValue,
       })
-      .catch(function (error) {
-        console.log(error);
-      });
+      .catch((error) => console.log(error));
   };
 
   return (
