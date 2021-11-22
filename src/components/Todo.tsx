@@ -56,7 +56,7 @@ export default function Todo(props: TodoProps): JSX.Element {
   return (
     <>
       {isEditing ? (
-        <ListItemButton dense>
+        <ListItemButton dense sx={{ py: 1 }}>
           <form onSubmit={(e) => handleEditTodo(e, id, editedTodo)}>
             <ListItemIcon>
               <Checkbox
