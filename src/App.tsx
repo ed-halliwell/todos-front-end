@@ -1,12 +1,20 @@
 import { useEffect, useState } from "react";
+import React from "react";
 import axios from "axios";
 import dotenv from "dotenv";
+import "./styles/App.css";
 
 import { API_BASE } from "./utils/APIFragments";
 import { ITodo } from "./utils/interfaces";
 
 import Todo from "./components/Todo";
 import NewTodoForm from "./components/NewTodoForm";
+import Header from "./components/Header";
+
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import Divider from "@mui/material/Divider";
+import Container from "@mui/material/Container";
 
 dotenv.config();
 
@@ -39,7 +47,7 @@ export default function App(): JSX.Element {
 
   const handleUpdateTodosAfterEditing = (updatedTodo: ITodo): void => {
     const updatedTodos = todoData.map((todo) =>
-      todo.id === updatedTodo.id ? { ...todo, text: updatedTodo.text } : todo
+      todo.id === updatedTodo.id ? { ...updatedTodo } : todo
     );
     setTodoData(updatedTodos);
   };
@@ -61,27 +69,43 @@ export default function App(): JSX.Element {
       .patch(`${API_BASE}todos/${todoId}`, {
         completed: !currentCompletedValue,
       })
+      .then((res) => handleUpdateTodosAfterEditing(res.data.data.didUpdate))
       .catch((error) => console.log(error));
   };
 
   return (
     <>
-      <h1>Todo List</h1>
-      <NewTodoForm updateTodosAfterCreation={handleUpdateTodosAfterCreation} />
-      <hr />
-      <ul>
-        {todoData
-          .sort((a, b) => b.createdAt - a.createdAt)
-          .map((todo) => (
-            <Todo
-              key={todo.id}
-              todo={todo}
-              updateTodosAfterEditing={handleUpdateTodosAfterEditing}
-              handleDeleteTodo={handleDeleteTodo}
-              handleIsCompleteToggle={handleIsCompleteToggle}
-            />
-          ))}
-      </ul>
+      <Header />
+      <Container maxWidth="xs" sx={{ border: "none" }}>
+        <NewTodoForm
+          updateTodosAfterCreation={handleUpdateTodosAfterCreation}
+        />
+        <Divider />
+        <List
+          sx={{
+            width: "100%",
+            maxWidth: 360,
+            bgcolor: "background.paper",
+            margin: "auto",
+          }}
+        >
+          {todoData
+            .sort((a, b) => b.createdAt - a.createdAt)
+            .map((todo) => (
+              <React.Fragment key={todo.id}>
+                <ListItem key={todo.id} disablePadding>
+                  <Todo
+                    todo={todo}
+                    updateTodosAfterEditing={handleUpdateTodosAfterEditing}
+                    handleDeleteTodo={handleDeleteTodo}
+                    handleIsCompleteToggle={handleIsCompleteToggle}
+                  />
+                </ListItem>
+                <Divider light />
+              </React.Fragment>
+            ))}
+        </List>
+      </Container>
     </>
   );
 }
