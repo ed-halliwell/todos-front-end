@@ -25,7 +25,7 @@ export default function App(): JSX.Element {
   const loadDataFromEndpoint = async (endpoint: string) => {
     try {
       const res = await axios.get(`${API_BASE}${endpoint}`);
-      setTodoData(res.data);
+      setTodoData(res.data.todos);
     } catch (err) {
       if (err instanceof Error) {
         console.log(`${err.name}: ${err.message}`);
@@ -65,11 +65,12 @@ export default function App(): JSX.Element {
     todoId: number,
     currentCompletedValue: boolean
   ) => {
+    console.log(todoId, currentCompletedValue);
     await axios
       .patch(`${API_BASE}todos/${todoId}`, {
         completed: !currentCompletedValue,
       })
-      .then((res) => handleUpdateTodosAfterEditing(res.data.data.didUpdate))
+      .then((res) => handleUpdateTodosAfterEditing(res.data.data.todo))
       .catch((error) => console.log(error));
   };
 

@@ -47,7 +47,7 @@ export default function Todo(props: TodoProps): JSX.Element {
         text: updatedText,
       })
       .then((res) => {
-        props.updateTodosAfterEditing(res.data.data.didUpdate);
+        props.updateTodosAfterEditing(res.data.data.todo);
         toggleEditMode();
       })
       .catch((error) => console.log(error));
@@ -99,7 +99,7 @@ export default function Todo(props: TodoProps): JSX.Element {
             />
           </ListItemIcon>
           <Box>
-            <ListItemText id={id.toString()} primary={text} />
+            <ListItemText id={`id_${id}`} primary={text} />
             <Typography variant="caption" display="block" gutterBottom>
               {timestampConverter(createdAt)}
             </Typography>

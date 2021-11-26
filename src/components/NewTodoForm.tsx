@@ -28,7 +28,7 @@ export default function NewTodoForm(props: NewTodoFormProps): JSX.Element {
         createdAt: Date.now(),
       })
       .then(function (response) {
-        props.updateTodosAfterCreation(response.data);
+        props.updateTodosAfterCreation(response.data.newTodo);
         setIsNewTodoMode(false);
       })
       .catch(function (error) {
