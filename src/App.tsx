@@ -65,7 +65,6 @@ export default function App(): JSX.Element {
     todoId: number,
     currentCompletedValue: boolean
   ) => {
-    console.log(todoId, currentCompletedValue);
     await axios
       .patch(`${API_BASE}todos/${todoId}`, {
         completed: !currentCompletedValue,
@@ -73,8 +72,6 @@ export default function App(): JSX.Element {
       .then((res) => handleUpdateTodosAfterEditing(res.data.data.todo))
       .catch((error) => console.log(error));
   };
-
-  console.log(todoData);
 
   return (
     <>
@@ -93,7 +90,7 @@ export default function App(): JSX.Element {
           }}
         >
           {todoData
-            .sort((a, b) => b.createdAt - a.createdAt)
+            .sort((a, b) => b.createdat - a.createdat)
             .map((todo) => (
               <React.Fragment key={todo.id}>
                 <ListItem key={todo.id} disablePadding>

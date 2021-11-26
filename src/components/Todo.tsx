@@ -27,7 +27,7 @@ interface TodoProps {
 }
 
 export default function Todo(props: TodoProps): JSX.Element {
-  const { text, id, createdAt, completed } = props.todo;
+  const { text, id, createdat, completed } = props.todo;
 
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [editedTodo, setEditedTodo] = useState<string>(text);
@@ -53,6 +53,7 @@ export default function Todo(props: TodoProps): JSX.Element {
       .catch((error) => console.log(error));
   };
 
+  console.log(createdat);
   return (
     <>
       {isEditing ? (
@@ -101,7 +102,7 @@ export default function Todo(props: TodoProps): JSX.Element {
           <Box>
             <ListItemText id={`id_${id}`} primary={text} />
             <Typography variant="caption" display="block" gutterBottom>
-              {timestampConverter(createdAt)}
+              {timestampConverter(createdat)}
             </Typography>
           </Box>
           <ListItemSecondaryAction>

@@ -4,4 +4,5 @@ test("greet returns a string, greeting the passed name", () => {
   expect(timestampConverter(0)).toMatch("years ago");
   expect(timestampConverter(-100)).toMatch("years ago");
   expect(timestampConverter(1637319601)).toMatch("ago");
+  expect(timestampConverter(1627945065)).toMatch("ago");
 });
