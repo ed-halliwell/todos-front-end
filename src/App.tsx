@@ -74,6 +74,8 @@ export default function App(): JSX.Element {
       .catch((error) => console.log(error));
   };
 
+  console.log(todoData);
+
   return (
     <>
       <Header />
