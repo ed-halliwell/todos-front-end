@@ -9,6 +9,5 @@ export default function timestampConverter(unixTimestamp: number): string {
     array[3],
     array[4],
   ]).fromNow();
-  console.log(result, array);
   return result;
 }

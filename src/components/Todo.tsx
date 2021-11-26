@@ -53,7 +53,6 @@ export default function Todo(props: TodoProps): JSX.Element {
       .catch((error) => console.log(error));
   };
 
-  console.log(createdat);
   return (
     <>
       {isEditing ? (
